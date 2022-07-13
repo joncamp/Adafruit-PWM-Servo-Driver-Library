@@ -98,8 +98,8 @@ public:
 
 private:
   uint8_t _i2caddr;
-  std::string _bus;
   TwoWire *_i2c;
+  std::string _bus;
 
   uint32_t _oscillator_freq;
   uint8_t read8(uint8_t addr);
