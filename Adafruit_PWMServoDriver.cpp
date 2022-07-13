@@ -37,7 +37,7 @@
  * TwoWire interface
  */
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver()
-    : _i2caddr(PCA9685_I2C_ADDRESS), _i2c(&Wire) {}
+    : _i2caddr(PCA9685_I2C_ADDRESS), _i2c(&Wire), _bus(DEFAULT_I2C_BUS) {}
 
 /*!
  *  @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on a
@@ -45,7 +45,15 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver()
  *  @param  addr The 7-bit I2C address to locate this chip, default is 0x40
  */
 Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr)
-    : _i2caddr(addr), _i2c(&Wire) {}
+    : _i2caddr(addr), _i2c(&Wire), _bus(DEFAULT_I2C_BUS) {}
+
+/*!
+ *  @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on a
+ * TwoWire interface
+ *  @param  addr The 7-bit I2C address to locate this chip, default is 0x40
+ */
+Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr, std::string bus)
+    : _i2caddr(addr), _i2c(&Wire), _bus(bus) {}
 
 /*!
  *  @brief  Instantiates a new PCA9685 PWM driver chip with the I2C address on a
@@ -64,6 +72,10 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(const uint8_t addr,
  *          Sets External Clock (Optional)
  */
 void Adafruit_PWMServoDriver::begin(uint8_t prescale) {
+  if (_bus != DEFAULT_I2C_BUS)
+  {
+    _i2c->setBus(_bus);
+  }
   _i2c->begin();
   reset();
   if (prescale) {

@@ -68,6 +68,8 @@
 #define PCA9685_PRESCALE_MIN 3   /**< minimum prescale value */
 #define PCA9685_PRESCALE_MAX 255 /**< maximum prescale value */
 
+#define DEFAULT_I2C_BUS "/dev/i2c-1"
+
 /*!
  *  @brief  Class that stores state and functions for interacting with PCA9685
  * PWM chip
@@ -76,6 +78,7 @@ class Adafruit_PWMServoDriver {
 public:
   Adafruit_PWMServoDriver();
   Adafruit_PWMServoDriver(const uint8_t addr);
+  Adafruit_PWMServoDriver(const uint8_t addr, std::string bus);
   Adafruit_PWMServoDriver(const uint8_t addr, TwoWire &i2c);
   void begin(uint8_t prescale = 0);
   void reset();
@@ -95,6 +98,7 @@ public:
 
 private:
   uint8_t _i2caddr;
+  std::string _bus;
   TwoWire *_i2c;
 
   uint32_t _oscillator_freq;
